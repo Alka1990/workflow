@@ -1,0 +1,117 @@
+
+
+
+
+
+#items { list-style: none; }
+
+.repeated-item {
+    position: relative;
+    margin: 3px 3px 3px 0;
+    padding: 1px;
+ 
+  
+    text-align: center;
+    
+  
+}
+
+.close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    font-size: 16px;
+    color: white;
+    background-color: rgb(218, 77, 11);
+    border: 1px solid rgb(128, 0, 0);
+}
+
+.close:hover {
+    cursor: pointer;
+    background-color: rgb(255, 81, 0);
+}
+
+/*
+ * Animations 
+ * ---------- */
+
+.repeated-item.ng-enter {
+    -webkit-transition:0.5s linear all;
+    -moz-transition:0.5s linear all;
+    -o-transition:0.5s linear all;
+    transition:0.5s linear all;
+    max-height: 0;
+    opacity: 0;
+    left: -50px;
+}
+ 
+.repeated-item.ng-enter.ng-enter-active {
+    max-height: 90px;
+    opacity: 1;
+    left: 0;
+}
+ 
+.repeated-item.ng-leave {
+  -webkit-animation:0.5s my_animation;
+  -moz-animation:0.5s my_animation;
+  -o-animation:0.5s my_animation;
+  animation:0.5s my_animation;
+}
+ 
+@keyframes my_animation {
+  from {
+    max-height: 90px;
+    opacity: 1;
+    left: 0;
+  }
+  to {
+    max-height: 0;
+    opacity: 0;
+    left: -50px;
+  }
+}
+ 
+/*
+  
+*/
+@-webkit-keyframes my_animation {
+  from {
+    max-height: 90px;
+    opacity: 1;
+    left: 0;
+  }
+  to {
+    max-height: 0;
+    opacity: 0;
+    left: -50px;
+  }
+}
+ 
+@-moz-keyframes my_animation {
+  from {
+    max-height: 90px;
+    opacity: 1;
+    left: 0;
+  }
+  to {
+    max-height: 0;
+    opacity: 0;
+    left: -50px;
+  }
+}
+ 
+@-o-keyframes my_animation {
+  from {
+    max-height: 90px;
+    opacity: 1;
+    left: 0;
+  }
+  to {
+    max-height: 0;
+    opacity: 0;
+    left: -50px;
+  }
+}

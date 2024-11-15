@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Case Master</title>
+</head>
+<body bgcolor="#E6E6FA">
+
+<form action="servlet2" method="post">  
+<% String name = (String)request.getAttribute("myname"); %>
+Decision :   <input type="text" name="decision"/><br/><br/>  
+Status :   <input type="text" name="status"/><br/><br/>  
+Stage :   <input type="text" name="stage"/><br/><br/>  
+<input type="submit" name="save" value="Save"/>  
+  
+</form>
+
+
+</body>
+</html>

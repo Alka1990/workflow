@@ -1,0 +1,57 @@
+#style-10::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: linear-gradient(left, #96A6BF, #63738C);
+  box-shadow: inset 0 0 1px 1px #5C6670;
+}
+
+#style-10::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background: #eee;
+  box-shadow: 0 0 1px 1px #bbb, inset 0 0 7px rgba(0,0,0,0.3)
+}
+
+#style-10::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(left, #8391A6, #536175);
+}
+
+#style-1::-webkit-scrollbar
+{
+	width: 12px;
+	background-color: #F5F5F5;
+}
+
+#style-1::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #555;
+}
+
+
+#style-4::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #F5F5F5;
+}
+
+#style-4::-webkit-scrollbar
+{
+	width: 10px;
+	background-color: #ffffff;
+}
+
+#style-4::-webkit-scrollbar-thumb
+{
+	background-color: #bcbcbc;
+	border: 2px solid #bcbcbc;
+}
+
+.scrollbar {
+	
+	overflow-y: scroll;
+	
+}
+
+.force-overflow {
+	min-height: 450px;
+}

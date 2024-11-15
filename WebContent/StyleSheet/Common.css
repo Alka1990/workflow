@@ -1,0 +1,238 @@
+.Label{
+font-family:Arial;
+font-size:90;
+font-style:Regular;
+height:32px;
+width:800px;
+}
+
+.TxtBox{
+font-family:Arial;
+font-size:12;
+font-style:Regular;
+height:20px;
+width:80px;
+}
+
+#navMenu {
+border: 0;
+height: 200px;
+left: 2px;
+margin: 0;
+position: absolute;
+top: 70px;
+width: 136px;
+z-index: 1;
+}
+
+#navMenu {
+border: 0;
+height: 200px;
+left: 2px;
+margin: 0;
+position: absolute;
+top: 70px;
+width: 136px;
+z-index: 1;
+}
+
+.Submitbtn{	width: 400px;
+	height: 400px;
+	border-bottom: solid;
+}
+
+BUTTON{
+elevation:lower;
+background-color:green;
+color: white;
+height: 30px;
+width: 60px;
+      
+}
+
+
+
+.fontTable{
+font-family: arial;
+font-size: 12px;
+color: green;
+}
+
+.errorMsg{
+font-family: arial;
+font-size: 14px;
+color: red;
+font-weight: normal;
+	}
+
+
+H1 {
+	font-family: arial;
+	font-size: 22px;
+	font: bold;
+	color: green;
+}
+
+.H2 {
+	font-family: arial;
+	font-size: 18px;
+	font: bold;
+	color: green;
+	font-weight: bold;
+}
+
+H3 {
+	font-family: arial;
+	font-size: 16px;
+	font: bold;
+	color: green;
+}
+
+H4 {
+	font-family: arial;
+	font-size: 14px;
+	font: bold;
+	color: green;
+}
+
+H5 {
+	font-family: arial;
+	font-size: 12px;
+	font: bold;
+	color: green;
+}
+
+
+
+P {
+	font: italic;
+	font-size: 12px;
+	height: 200px;
+	width: 200px;
+}
+
+
+
+SPAN {
+	width: 300px;
+}
+
+.imgIcons {
+	height: 14px; 
+	width: 14px;
+}
+
+
+.topMenu {
+	width: 100%; 
+	height: 150px; 
+	background-color: white;
+	position: fixed;
+	top: 0%;
+	z-index: 1;
+}
+
+
+.topMenuDiv {
+	width: 100%; 
+	height: 20px; 
+	position: absolute; 
+	top:  130px; 
+	background-color: silver;
+	color: green;
+	
+}
+
+
+.topMenuTopDiv{
+	position: fixed;
+	width : 100%;	
+	top : 100px;
+}
+
+.leftPanel {
+	width: 190px;
+	height: 250px;
+	position: fixed;
+	left: 10px;
+	top: 155px;
+	background-color: silver;
+	z-index: 1;
+}
+
+.adminLeftPanel {
+	width: 190px;
+	height: 200px;
+	position: fixed;
+	left: 10px;
+	top: 155px;
+	background-color: silver;
+	z-index: 1;
+}
+
+.leftPanelDiv {
+	position: relative;
+	width : 95%;	
+	right: -7.5%;
+	background-color: white;
+	height: 92%;
+	color: green;
+	left:2.5%; 
+	font-size: 15px;
+	top: -2.5%;
+}
+
+.adminLeftPanelDiv {
+	position: relative;
+	width : 95%;	
+	right: -7.5%;
+	background-color: white;
+	height: 90%;
+	color: green;
+	left:2.5%; 
+	font-size: 15px;
+	top: -2.5%;
+}
+
+
+.leftPanelTopDiv {
+	position: relative;
+	width : 100%;	
+	background-color: green;
+	height: 14%;
+	color: white;
+	font-size : 12px;
+	
+}
+
+.adminLeftPanelTopDiv {
+	position: relative;
+	width : 100%;	
+	font-size : 12px;
+	background-color: green;
+	height: 14%;
+	color: white;
+	
+} 
+
+.bottomMenu {
+	width: 99%; 
+	height: 3%; 
+	position: fixed; 
+	bottom:  0%; 
+	background-color: gray;
+	right: 0.5%;
+	left: 0.5%
+}
+
+.mainForm {
+	width: 79%; 
+	height: 74%; 
+	position: absolute; 
+	top:  155px; 
+	background-color: white;
+	right: 0.5%;
+	left: 235px;
+	z-index: 0;
+	
+}

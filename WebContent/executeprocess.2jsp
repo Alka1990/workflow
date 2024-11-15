@@ -1,0 +1,874 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1" isThreadSafe="false" errorPage="Error.jsp"%>
+
+<%
+List userRights = (List) session.getAttribute("getRight");
+%>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>:: WorkFlow Search ::</title>
+
+<link rel="shortcut icon"
+	href="${pageContext.request.contextPath}/Images/logo.png">
+<link
+	href="${pageContext.request.contextPath}/StyleSheet/bootstrap.min1.css"
+	rel="stylesheet">
+<link href="${pageContext.request.contextPath}/StyleSheet/custom1.css"
+	rel="stylesheet">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+	integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/JavaScript/jquery-1.10.1.js"></script>
+
+<style>
+.table>thead tr th {
+	background-color: #3A98B9;
+	color: white;
+	line-height: 2;
+}
+
+table.dataTable.display tbody tr td {
+	padding-top: 15px;
+}
+
+table.dataTable.display tbody tr td a {
+	text-decoration: none
+}
+
+table.dataTable.display tbody tr:first-child td {
+	text-align: left;
+} 
+
+#loading {
+	position: fixed;
+	display: block;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	text-align: center;
+	opacity: 0.7;
+	background-color: #fff;
+	z-index: 99;
+}
+
+div.dom_wrapper {
+  position: sticky;  /* Fix to the top */
+  top: 0;
+  padding: 2px;
+  background: rgba(255, 255, 255, 1);  /* hide the scrolling table */
+}
+
+#loading-image {
+	position: absolute;
+	top: 30%;
+	left: 0;
+	right: 0;
+	margin-left: auto;
+	margin-right: auto;
+	z-index: 100;
+}
+</style>
+</head>
+
+<body class="nav-md">
+	<div class="container body">
+		<div class="main_container">
+			<div class="col-md-3 left_col">
+				<div class="left_col scroll-view">
+					<%@ include file="TopBar.jsp"%>
+					<%@ include file="LeftTopSide.jsp"%>
+					<%@ include file="SideBar.jsp"%>
+
+				</div>
+			</div>
+			<%@ include file="TopNavigation.jsp"%>
+
+			<!-- Main Content -->
+			<div class="right_col" role="main">
+				<div class="container" style="padding-top: 20px;">
+					<div class="panel panel-primary">
+						<div class="panel panel-primary">
+							<div class="panel-heading">
+								<strong>Billing Reports</strong>
+							</div>
+							<form id="reportForm">
+								<div class="row">
+									<div class="col-lg-12" style="margin-top: 20px;">
+										<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+											<div class="input-group">
+												<input type="text" class="form-control"
+													style="background-color: white" placeholder="From"
+													name="startdate" id="startdate"> <span
+													class="input-group-addon" id="sizing-addon2"><i
+													class="glyphicon glyphicon-calendar"></i></span>
+											</div>
+										</div>
+										<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+											<div class="input-group">
+												<input type="text" class="form-control"
+													style="background-color: white" placeholder="TO"
+													name="enddate" id="enddate"> <span
+													class="input-group-addon" id="sizing-addon2"><i
+													class="glyphicon glyphicon-calendar"></i></span>
+											</div>
+										</div>
+									</div>
+								</div>
+								<h5 class="text-center text-danger" id="message1"
+									style="display: none;">Please fill these fields</h5>
+								<hr>
+								<div class="row">
+									<div class="col-lg-12">
+										<div class="col-lg-2 col-md-4 col-sm-6 col-xs-12"
+											style="margin-top: 10px;">
+											<label>Case Type:</label> <select class="form-control"
+												id="caseType">
+												<option value="clove">Clove</option>
+												<option value="32watts">32Watts</option>
+												<option value="study">Study</option>
+												<option value="institutional">Institutional</option>
+												<option value="digital">Digital</option>
+												<option value="study">Study</option>
+												<option value="planned">Planned</option>
+												<option value="retail">Retail</option>
+											</select>
+										</div>
+										<div class="col-lg-2 col-md-4 col-sm-6 col-xs-12"
+											style="margin-top: 10px;">
+											<label>Dispatch Type:</label> <select class="form-control"
+												id="dispatchType">
+												<option value="aligner">Aligner</option>
+												<option value="starter kit">Starter Kit</option>
+											</select>
+										</div>
+										<div class="col-lg-2 col-md-4 col-sm-6 col-xs-12"
+											style="margin-top: 10px;">
+											<label>Request Type:</label> <select class="form-control"
+												id="requestType">
+												<option value=""></option>
+												<option value="new case">New Case</option>
+												<option value="next batch">Next Batch</option>
+												<option value="mid scan">Mid Scan</option>
+												<option value="retainer">Retainer</option>
+												<option value="refinement">Refinement</option>
+												<option value="rescan">Rescan</option>
+											</select>
+										</div>
+										<div class="col-lg-2 col-md-4 col-sm-6 col-xs-12"
+											style="margin-top: 10px;">
+											<label>Payment Status:</label> <select class="form-control"
+												id="paymentStatus">
+												<option value="unbilled">Unbilled</option>
+												<option value="to bill">To Bill</option>
+												<option value="billed">Billed</option>
+												<option value="collected">Collected</option>
+												<option value="issue cn">Issue CN</option>
+												<option value="cn issued">CN Issued</option>
+												<option value="cancelled">Cancelled</option>
+												<option value="dispute">Dispute</option>
+											</select>
+										</div>
+										<div class="col-lg-2 col-md-4 col-sm-6 col-xs-12"
+											style="margin-top: 10px;">
+											<label>Extra Aligner:</label> <select class="form-control"
+												id="extraAligners">
+												<option value="Yes">Yes</option>
+												<option value="No" selected>No</option>
+											</select>
+										</div>
+										<div class="col-lg-2 col-md-4 col-sm-6 col-xs-12"
+											style="margin-top: 10px;">
+											<button type="submit" class="btn btn-warning btn-block"
+												style="margin-top: 24px;">
+												<i class="fa-solid fa-magnifying-glass"
+													style="margin-right: 5px;"></i> Search
+											</button>
+										</div>
+									</div>
+								</div>
+							</form>
+							<hr>
+							<div id="reportDownloadPanel" style="display: none;">
+								<div class="row">
+									<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+										<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12"
+											style="margin-top: 5px; margin-bottom: 5px;">
+											<button class="btn btn-warning btn-block"
+												onclick="exportToExcel()" type="submit" disabled
+												id="downloadExcel">
+												<i class="fa-solid fa-file-arrow-down"
+													style="margin-right: 7px;"></i>Download CSV
+											</button>
+										</div>
+										<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12"
+											style="margin-top: 5px; margin-bottom: 5px;">
+											<button class="btn btn-warning btn-block" type="submit"
+												id="multipleChange" onClick="multipleCaseModal()"
+												data-toggle="modal" data-target="#modal2" disabled>
+												<i class="fa-regular fa-pen-to-square"
+													style="margin-right: 6px;"></i>Change Billing Status
+											</button>
+										</div>
+									</div>
+								</div>
+								<hr>
+								<div class="row"
+									style="margin-bottom: 20px; width: 98%; margin-left: 1%;">
+									<div class="table-responsive">
+										<table id="dtBasicExample"
+											class="table table-bordered table-sm dataTable display nowrap"
+											role="grid" aria-describedby="dtBasicExample_info"
+											style="width: 100%;">
+											<thead>
+												<tr>
+													<th>Details</th>
+													<th><input type="checkbox" id="check_all" value="null"></th>
+													<th>Dispatched Id</th>
+													<th>Case Id</th>
+													<th>Patient Name</th>
+													<th>Doctor Name</th>
+													<th>CRM</th>
+													<th>Location</th>
+													<th>City</th>
+													<th>Pincode</th>
+													<th>Phone</th>
+													<th>Plan Date</th>
+													<th>Request Type</th>
+													<th>Payment Mode</th>
+													<th>Total Amount</th>
+													<th>Received Amount</th>
+													<th>Last Payment Date</th>
+													<th>Remain Amount</th>
+													<th>Planning Id</th>
+													<th>Upper Planned</th>
+													<th>Lower Planned</th>
+													<th>Upper Dispatched</th>
+													<th>Lower Dispatched</th>
+													<th>Extra Upper Batches</th>
+													<th>Extra Lower Batches</th>
+													<th>Upper Att</th>
+													<th>Lower Att</th>
+													<th>Mode of Dispatch</th>
+													<th>Tracking Id</th>
+													<th>Delivery No</th>
+													<th>Dispatched Date</th>
+													<th>Payment Bill status</th>
+													<th>Payment Bill Status Remarks</th>
+												</tr>
+											</thead>
+											<tbody>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="row" style="display: none;" id="loaderPanel">
+								<div id="loading">
+									<img id="loading-image" src="Images/Loading_icon.gif"
+										draggable="false" alt="Loading..." />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Single Case Update Modal -->
+	<div class="modal" id="modal1" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="exampleModalLabel">Change Billing
+						Status</h4>
+				</div>
+				<div class="modal-body">
+					<form id="loginfrm">
+
+						<div class="row">
+							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+								<div class="form-group">
+									<label for="recipient-name" class="control-label">Dispatched
+										Id:</label> <input type="text" readonly class="form-control"
+										id="dispatched-id">
+								</div>
+							</div>
+							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+								<div class="form-group">
+									<label for="recipient-name" class="control-label">Case
+										Id:</label> <input type="text" readonly class="form-control"
+										id="case-id">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+								<div class="form-group">
+									<label for="recipient-name" class="control-label">Doctor
+										Name:</label> <input type="text" readonly class="form-control"
+										id="doctor-name">
+								</div>
+							</div>
+							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+								<div class="form-group">
+									<label for="recipient-name" class="control-label">Patient
+										Name:</label> <input type="text" readonly class="form-control"
+										id="patient-name">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+								<div class="form-group">
+									<label for="recipient-name" class="control-label">Upper
+										Dispatched:</label> <input type="text" readonly class="form-control"
+										id="upper-dispatched">
+								</div>
+							</div>
+							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+								<div class="form-group">
+									<label for="recipient-name" class="control-label">Lower
+										Dispatched:</label> <input type="text" readonly class="form-control"
+										id="lower-dispatched">
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="recipient-name" class="control-label">Payment
+								Bill Status:</label> <select id="modal1_select" class="form-control">
+								<%
+								if (userRights.contains("WFC") == true) {
+								%>
+								<option value="unbilled">Unbilled</option>
+								<option value="to bill">To Bill</option>
+								<%
+								}
+								if (userRights.contains("account") == true) {
+								%>
+								<option value="billed">Billed</option>
+								<option value="collected">Collected</option>
+								<%
+								}
+								%>
+								<option value="issue cn">Issue CN</option>
+								<option value="cn issued">CN Issued</option>
+								<option value="cancelled">Cancelled</option>
+								<option value="dispute">Dispute</option>
+							</select> <span class="alert-msg" id="err_msg3"
+								style="color: red; display: none;">Please change payment
+								bill status</span>
+						</div>
+						<div class="form-group" id="remarks1" style="display: none;">
+							<label for="recipient-name" class="control-label">Remarks:</label>
+							<input type="text" required class="form-control" name="myText"
+								id="paymentRemarks1"> <span class="alert-msg"
+								id="err_msg1" style="color: red; display: none;">This
+								Field is Required*</span>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal"
+						id="modal_close1">Close</button>
+					<button type="button" id="singleUpdateButton" class="btn">Submit</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Multiple Cases Update Modal -->
+	<div class="modal" id="modal2" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="exampleModalLabel">Change Multiple Billing
+						Status</h4>
+					<span id="senddata1"></span>
+				</div>
+				<div class="modal-body">
+					<form id="checkedfrmdata">
+						<div class="form-group">
+							<label for="recipient-name" class="control-label">Case
+								Id:</label>
+							<textarea readonly class="form-control" id="case_ids"></textarea>
+						</div>
+						<div class="form-group">
+							<label for="recipient-name" class="control-label">Payment
+								Bill Status:</label> <select id="modal2_select" class="form-control">
+								<%
+								if (userRights.contains("WFC") == true) {
+								%>
+								<option value="unbilled">Unbilled</option>
+								<option value="to bill">To Bill</option>
+								<%
+								}
+								if (userRights.contains("account") == true) {
+								%>
+								<option value="billed">Billed</option>
+								<option value="collected">Collected</option>
+								<%
+								}
+								%>
+								<option value="issue cn">Issue CN</option>
+								<option value="cn issued">CN Issued</option>
+								<option value="cancelled">Cancelled</option>
+								<option value="dispute">Dispute</option>
+							</select> <span class="alert-msg" id="err_msg4"
+								style="color: red; display: none;">Please change payment
+								bill status</span>
+						</div>
+						<div class="form-group" id="remarks2" style="display: none;">
+							<label for="recipient-name" class="control-label">Remarks:</label>
+							<input type="text" required class="form-control" name="myText"
+								id="paymentRemarks2"> <span class="alert-msg"
+								id="err_msg2" style="color: red; display: none;">This
+								Field is Required*</span>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal"
+						id="modal_close2">Close</button>
+					<button type="button" class="btn marked" id="multipleUpdateButton">Submit</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript"
+		src="${pageContext.request.contextPath}/JavaScript/general.js"></script>
+	<script type="text/javascript"
+		src="${pageContext.request.contextPath}/JavaScript/bootstrap.js"></script>
+	<script type="text/javascript"
+		src="${pageContext.request.contextPath}/JavaScript/custom.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+	<script type="text/javascript" charset="utf8"
+		src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
+	<script type="text/javascript"
+		src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+
+	<script>
+	let api_response = "";
+	let dispatch_ids = [];
+	let host = "http://112.196.167.2:8080";
+	$.fn.dataTable.ext.errMode = "none";
+
+	$(document).ready(function() {
+
+		// Datepicker settings
+		$("#startdate, #enddate").flatpickr({
+			maxDate: new Date()
+		});
+		$("#startdate").on("change", function() {
+			let startDateValue = $("#startdate").val();
+			$("#enddate").flatpickr({
+				maxDate: new Date(),
+				minDate: startDateValue
+			});
+		});
+
+		// To deselect header selection 		
+		$("#dtBasicExample").on("page.dt", function() {
+			$("#check_all").prop("checked", false);
+			$("#multipleChange").prop("disabled", true);
+			$(".dispatch_checkbox").prop("checked", false);
+		});
+
+		// Select or deselect all checkboxes
+		$("#check_all").on("click", function() {
+			if ($("input:checkbox").prop("checked") && api_response.length !== 0) {
+				$("input:checkbox[name='row_check']").prop("checked", true);
+				$("#multipleChange").prop("disabled", false);
+			} else {
+				$("input:checkbox[name='row_check']").prop("checked", false);
+				$("#multipleChange").prop("disabled", true);
+			}
+		});
+
+		// To display or hide remarks in modal1
+		$("#modal1_select").on("change", function() {
+			if ($(this).val() == "cancelled" || $(this).val() == "dispute") {
+				$("#remarks1").show();
+			} else {
+				$("#remarks1").hide();
+			}
+		});
+
+		// To display or hide remarks in modal2
+		$("#modal2_select").on("change", function() {
+			if ($(this).val() == "cancelled" || $(this).val() == "dispute") {
+				$("#remarks2").show();
+			} else {
+				$("#remarks2").hide();
+			}
+		});
+
+		// To submit modal1 form
+		$("#singleUpdateButton").on("click", function(event) {
+			event.preventDefault();
+			let isReady = true;
+			let paymentStatus = $("#modal1_select").val();
+			let case_id = $("#case-id").val();
+			let dispatched_id = $("#dispatched-id").val();
+			let remarks = $("#paymentRemarks1").val();
+			let optionValue = JSON.parse(api_response).message[0].payment_Bill_status;
+			if (paymentStatus === optionValue) {
+				isReady = false;
+				$("#err_msg3").show();
+			} else {
+				isReady = true;
+				$("#err_msg3").hide();
+			}
+			if (paymentStatus === "cancelled" || paymentStatus === "dispute") {
+				if ($("#paymentRemarks1").val() === "") {
+					isReady = false;
+					$("#err_msg1").show();
+				} else {
+					isReady = true;
+					$("#err_msg1").hide();
+				}
+			}
+			let url = "/updatePaymentBillStatus?ids=" + dispatched_id + "&status=" + paymentStatus + "&remarks=" + remarks;
+			if (isReady) {
+				$("#modal_close1").click();
+				$("#loaderPanel").show();
+				$.ajax({
+					url: host + url,
+					type: "PUT",
+					success: function(response) {
+						alert("Billing status updated successfully.");
+						let myTable = $('#dtBasicExample').DataTable();
+						let indexNumber = $("#" + case_id + "").closest("tr").index();
+						myTable.row(":eq(" + indexNumber + ")").remove().draw();
+						$("#loaderPanel").hide();
+					},
+					error: function(response) {
+						console.log(response);
+						alert("Internal server error!");
+						$("#loaderPanel").hide();
+					}
+				});
+			}
+		});
+
+		// To submit modal2 form
+		$("#multipleUpdateButton").on("click", function(event) {
+			event.preventDefault();
+			let isReady = true;
+			let paymentStatus = $("#modal2_select").val();
+			let remarks = $("#paymentRemarks2").val();
+			let optionValue = JSON.parse(api_response).message[0].payment_Bill_status;
+			if (paymentStatus === optionValue) {
+				isReady = false;
+				$("#err_msg4").show();
+			} else {
+				isReady = true;
+				$("#err_msg4").hide();
+			}
+			if (paymentStatus === "cancelled" || paymentStatus === "dispute") {
+				if ($("#paymentRemarks2").val() === "") {
+					isReady = false;
+					$("#err_msg2").show();
+				} else {
+					isReady = true;
+					$("#err_msg2").hide();
+				}
+			}
+			let url = "/updatePaymentBillStatus?ids=" + dispatch_ids + "&status=" + paymentStatus + "&remarks=" + remarks;
+			if (isReady) {
+				$("#modal_close2").click();
+				$("#loaderPanel").show();
+				$.ajax({
+					url: host + url,
+					type: "PUT",
+					success: function(response) {
+						alert("Billing status updated successfully.");
+						let myTable = $('#dtBasicExample').DataTable();
+						$(".dispatch_checkbox:checked").each(function(i) {
+							let indexNumber = $(this).closest("tr").index();
+							myTable.row(":eq(" + indexNumber + ")").remove().draw();
+						});
+						$("#check_all").prop("checked", false);
+						$("#multipleChange").prop("disabled", true);
+						$("#loaderPanel").hide();
+					},
+					error: function(response) {
+						console.log(response);
+						alert("Internal server error!");
+						$("#loaderPanel").hide();
+					}
+				});
+			}
+		});
+
+		// To search data and to show table
+		$("#reportForm").on("submit", function(event) {
+			event.preventDefault();
+			let isReady = false;
+			let startdate = $("#startdate").val();
+			let enddate = $("#enddate").val();
+			let caseType = $("#caseType").val();
+			let dispatchType = $("#dispatchType").val();
+			let requestType = $("#requestType").val();
+			let paymentStatus = $("#paymentStatus").val();
+			let extraAligners = $("#extraAligners").val();
+			$("#reportDownloadPanel").hide();
+			$("#multipleChange").prop("disabled", true);
+			let table = $("#dtBasicExample").DataTable();
+			table.clear().draw();
+			table.destroy();
+			$("#check_all").prop("checked", false);
+			$("#downloadExcel").prop("disabled", true);
+			if (startdate == "" || enddate == "") {
+				$("#message1").show();
+				isReady = false;
+			} else {
+				$("#message1").hide();
+				isReady = true;
+			}
+			let url = "/getWattsDispatchReports?FromDate=" + startdate + "&ToDate=" + enddate + "&Case_Type=" + caseType + "&Dispatch_Type=" + dispatchType + "&Request_Type=" + requestType + "&Extra_Aligner=" + extraAligners + "&Payment_Status=" + paymentStatus;
+			if (isReady) {
+				$("#loaderPanel").show();
+				$.ajax({
+					url: host + url,
+					type: "GET",
+					success: function(response) {
+						api_response = JSON.stringify(response)
+						$("#dtBasicExample").DataTable({
+							"data": response.message,
+							"columns": [{
+									"data": "case_id",
+									"mRender": function(data, type, full) {
+										return "<a href='' class='text-primary case_id' onClick='singleCaseModal(" + data + ")' id='" + data + "' data-toggle='modal' data-target='#modal1'>Change Billing Status</a>";
+									}
+								},
+								{
+									"data": "dispatched_id",
+									"mRender": function(data, type, full) {
+										return "<input type='checkbox' id='" + data + "' value='" + data + "::" + full.case_id + "' class='text-center dispatch_checkbox' name='row_check' onclick='enableBillingButton(this)' class='selectMultiple' style='margin-left:8px;margin-top:3px;'>";
+									}
+								},
+								{
+									"data": "dispatched_id"
+								},
+								{
+									"data": "case_id",
+									"mRender": function(data, type, full) {
+										return "<a href='Approval?caseId=" + data + "&logusername=null&NxtStage=INI&SearchStage=Y' class='text-primary'>" + data + "</a>";
+									}
+								},
+								{
+									"data": "patient_name"
+								},
+								{
+									"data": "doctor_name"
+								},
+								{
+									"data": "crm"
+								},
+								{
+									"data": "location"
+								},
+								{
+									"data": "city"
+								},
+								{
+									"data": "pincode"
+								},
+								{
+									"data": "phone"
+								},
+								{
+									"data": "plan_date"
+								},
+								{
+									"data": "request_type"
+								},
+								{
+									"data": "payment_mode"
+								},
+								{
+									"data": "total_Amount"
+								},
+								{
+									"data": "received_Amount"
+								},
+								{
+									"data": "last_Payment_Date"
+								},
+								{
+									"data": "remain_Amount"
+								},
+								{
+									"data": "planning_id"
+								},
+								{
+									"data": "upper_Planned"
+								},
+								{
+									"data": "lower_Planned"
+								},
+								{
+									"data": "upper_Dispatched"
+								},
+								{
+									"data": "lower_Dispatched"
+								},
+								{
+									"data": "extra_Upper_Batches"
+								},
+								{
+									"data": "extra_Lower_Batches"
+								},
+								{
+									"data": "upper_Att"
+								},
+								{
+									"data": "lower_att"
+								},
+								{
+									"data": "mode_of_dispatch"
+								},
+								{
+									"data": "tracking_id"
+								},
+								{
+									"data": "delivery_nn"
+								},
+								{
+									"data": "dispatched_date"
+								},
+								{
+									"data": "payment_Bill_status"
+								},
+								{
+									"data": "payment_Bill_status_Remarks"
+								}
+							]
+						});
+
+						let optionValue = JSON.parse(api_response).message[0].payment_Bill_status;
+						$('option[name="' + optionValue + '"]').prop("selected", true);
+						$("#downloadExcel").prop("disabled", false);
+						$("#reportDownloadPanel").show();
+						$("#loaderPanel").hide();
+					},
+					error: function(response) {
+						console.log(response)
+						if (response.status == 404) {
+							$("#dtBasicExample").DataTable({
+								"language": {
+									"emptyTable": "No Data Available"
+								}
+							});
+						} else {
+							$("#dtBasicExample").DataTable({
+								"language": {
+									"emptyTable": "Internal Server Error"
+								}
+							});
+						}
+						$("#reportDownloadPanel").show();
+						$("#loaderPanel").hide();
+					}
+				});
+			}
+		});
+
+	});
+
+	// To download csv file
+	function exportToExcel() {
+		let response = JSON.parse(api_response);
+		const wb = XLSX.utils.book_new();
+		const ws = XLSX.utils.json_to_sheet(response.message);
+		XLSX.utils.book_append_sheet(wb, ws, "test");
+		XLSX.writeFile(wb, "Report.csv");
+	}
+
+	// To enable or disable change billing button 
+	function enableBillingButton() {
+		let total_checked_boxes = $("input:checkbox[name='row_check']:checked").length;
+		if ($("#multipleChange").prop("disabled") == true && total_checked_boxes != 0) {
+			$("#multipleChange").prop("disabled", false);
+		}
+		if ($("#multipleChange").prop("disabled") == false && total_checked_boxes == 0) {
+			$("#multipleChange").prop("disabled", true);
+		}
+	}
+
+	// To set or reset data in modal1
+	function singleCaseModal(case_id) {
+		let response = JSON.parse(api_response)
+		let optionValue = JSON.parse(api_response).message[0].payment_Bill_status;
+		$('#modal1_select option[value="' + optionValue + '"]').prop('selected', true);
+		if ($("#modal1_select").val() == "cancelled" || $("#modal1_select").val() == "dispute") {
+			$("#remarks1").show();
+		} else {
+			$("#remarks1").hide();
+			$("#err_msg1").hide();
+		}
+		$("#paymentRemarks1").val("");
+		for (let i = 0; i < response.message.length; i++) {
+			if (response.message[i].case_id == case_id) {
+				$("#dispatched-id").val(response.message[i].dispatched_id)
+				$("#case-id").val(response.message[i].case_id)
+				$("#doctor-name").val(response.message[i].doctor_name)
+				$("#patient-name").val(response.message[i].patient_name)
+				$("#upper-dispatched").val(response.message[i].upper_Dispatched)
+				$("#lower-dispatched").val(response.message[i].lower_Dispatched)
+				break;
+			}
+		}
+	}
+
+	// To set or reset data in modal2
+	function multipleCaseModal() {
+		let case_ids = [];
+		let dispatch_id = [];
+		let optionValue = JSON.parse(api_response).message[0].payment_Bill_status;
+		$('#modal2_select option[value="' + optionValue + '"]').prop('selected', true);
+		if ($("#modal2_select").val() == "cancelled" || $("#modal2_select").val() == "dispute") {
+			$("#remarks2").show();
+		} else {
+			$("#remarks2").hide();
+			$("#err_msg2").hide();
+		}
+		$("#paymentRemarks2").val("");
+		$(".dispatch_checkbox:checked").each(function(i) {
+			let data = $(this).val().split("::");
+			dispatch_id[i] = data[0];
+			case_ids[i] = data[1];
+			document.getElementById("case_ids").value = case_ids;
+		});
+		dispatch_ids = dispatch_id;
+	}
+	</script>
+
+</body>
+
+</html>

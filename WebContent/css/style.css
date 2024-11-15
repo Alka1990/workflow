@@ -1,0 +1,9 @@
+body {
+  font-family: Tahoma, Arial, Verdana;
+  font-size: 12px;
+  color: #353535;
+}
+body #chartdiv {
+  width: 280px;
+  height: 150px;
+}

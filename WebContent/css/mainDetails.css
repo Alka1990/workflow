@@ -1,0 +1,36 @@
+body{
+	/* background-image: url('../images/bg-blue.jpeg') */
+	
+	background-color:#faf7f7;
+}
+body a:hover,a:link{
+	text-decoration: none;
+}
+h3{
+    color:white;
+    font-size: 1rem!important;
+}
+h3:hover{
+    color:black;
+}
+button i{
+    cursor: pointer;
+}
+button{
+    background-color:#faf7f7 ;
+}
+#SaveButton{
+    height: 30px;
+    padding-left: 20px;
+    padding-right: 20px;
+    width:auto;
+    text-align: center;
+    background-color: rgb(71, 71, 71);
+    color: rgb(255, 255, 255);
+    border: none;
+    outline: none;
+    box-shadow: 3px 5px 5px 1px rgba(136,134,134,0.75);
+-webkit-box-shadow: 3px 5px 5px 1px rgba(136,134,134,0.75);
+-moz-box-shadow: 3px 5px 5px 1px rgba(136,134,134,0.75);
+cursor: pointer;
+}
